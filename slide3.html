@@ -134,8 +134,10 @@
 
         <div id="step-2" class="fade-in-up relative z-10 flex flex-col items-center">
             <div
-                class="w-32 h-32 rounded-full bg-gray-900 border-2 border-cyan-500 flex items-center justify-center shadow-[0_0_30px_rgba(0,247,255,0.2)] pulse-ring relative z-20">
-                <svg class="w-12 h-12 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                class="w-32 h-32 rounded-full bg-gray-900 border-2 border-cyan-500 flex items-center justify-center shadow-[0_0_30px_rgba(0,247,255,0.2)] pulse-ring relative z-20 overflow-hidden">
+                <canvas id="matrix-canvas" class="absolute inset-0 w-full h-full opacity-50"></canvas>
+                <svg class="w-12 h-12 text-cyan-400 relative z-10" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                         d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                 </svg>
@@ -229,6 +231,7 @@
                 step2.classList.add('visible');
                 status.innerText = "AI ANALYZING PATTERNS...";
                 status.className = "text-cyan-400 font-mono text-xs uppercase tracking-widest animate-pulse";
+                startMatrixRain();
             }, 2800);
 
             // 4. Mark Input as Scam (3.5s) - Visual Feedback
@@ -254,11 +257,46 @@
         // Auto-Run
         setTimeout(runSequence, 1000);
 
-        // --- Navigation ---
+        // --- Matrix Rain Logic ---
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+        let matrixInterval;
+
+        function startMatrixRain() {
+            canvas.width = 128; // Match container size roughly
+            canvas.height = 128;
+
+            const cols = Math.floor(canvas.width / 10);
+            const ypos = Array(cols).fill(0);
+
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            matrixInterval = setInterval(() => {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.fillStyle = '#0f0';
+                ctx.font = '10px monospace';
+
+                ypos.forEach((y, ind) => {
+                    const text = Math.random() > 0.5 ? '1' : '0';
+                    const x = ind * 10;
+                    ctx.fillText(text, x, y);
+                    if (y > 100 + Math.random() * 10000) ypos[ind] = 0;
+                    else ypos[ind] = y + 10;
+                });
+            }, 50);
+        }
+
+        // Navigation
         document.addEventListener('keydown', (e) => {
             if (e.code === 'ArrowLeft') window.location.href = 'slide2.html';
             if (['ArrowRight', 'Space', 'Enter'].includes(e.code)) window.location.href = 'slide4.html';
         });
+
+        // Trigger Matrix in Sequence
+        // (Modified runSequence below)
     </script>
 </body>
 

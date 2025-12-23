@@ -91,7 +91,7 @@
         <div
             class="flex-1 bg-black/20 rounded-lg h-10 flex items-center px-4 border border-gray-700 relative overflow-hidden">
             <span class="text-gray-400 mr-3">🔗</span>
-            <span class="text-sm font-mono text-gray-300">https://twitter.com/User902/status/18920...</span>
+            <span id="url-text" class="text-sm font-mono text-gray-300"></span>
 
             <div id="scan-line"
                 class="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent -translate-x-full">
@@ -243,40 +243,59 @@
     <script>
         // --- Animation Logic ---
 
-        // 1. Navbar Scanning Line
+        // --- Animation Logic ---
+
+        // 1. Typewriter & Scan
+        const urlText = document.getElementById('url-text');
         const scanLine = document.getElementById('scan-line');
+        const targetUrl = "https://twitter.com/User902/status/18920...";
+
         setTimeout(() => {
-            scanLine.style.transition = 'transform 2s linear';
-            scanLine.style.transform = 'translateX(100%)';
+            let i = 0;
+            const type = setInterval(() => {
+                urlText.innerText += targetUrl.charAt(i);
+                i++;
+                if (i >= targetUrl.length) {
+                    clearInterval(type);
+                    // Start Scan
+                    setTimeout(() => {
+                        scanLine.style.transition = 'transform 2s linear';
+                        scanLine.style.transform = 'translateX(100%)';
+                        startAnalysis(); // Trigger rest
+                    }, 200);
+                }
+            }, 40);
         }, 500);
 
-        // 2. Progress Bar
+        // 2. Progress Bar & Analysis (Wrapped in function)
         const progress = document.getElementById('progress');
         const procText = document.getElementById('process-text');
         const procPct = document.getElementById('process-pct');
 
-        setTimeout(() => {
-            progress.style.width = "100%";
-        }, 500);
+        function startAnalysis() {
+            setTimeout(() => {
+                progress.style.width = "100%";
+            }, 500);
 
-        // Update Text during progress
-        setTimeout(() => { procText.innerText = "Querying Blockchain..."; procPct.innerText = "45%"; }, 1000);
-        setTimeout(() => { procText.innerText = "Finalizing Verdict..."; procPct.innerText = "80%"; }, 1800);
-        setTimeout(() => {
-            procText.innerText = "Analysis Complete";
-            procText.classList.add('text-green-400');
-            procPct.innerText = "100%";
-        }, 2200);
+            // Update Text during progress
+            setTimeout(() => { procText.innerText = "Querying Blockchain..."; procPct.innerText = "45%"; }, 1000);
+            setTimeout(() => { procText.innerText = "Finalizing Verdict..."; procPct.innerText = "80%"; }, 1800);
+            setTimeout(() => {
+                procText.innerText = "Analysis Complete";
+                procText.classList.add('text-green-400');
+                procPct.innerText = "100%";
+
+                showResults(); // Trigger final results
+            }, 2200);
+        }
 
         // 3. Score Gauge & Numbers
         const scoreCircle = document.getElementById('score-circle');
         const scoreNum = document.getElementById('score-num');
         const tweetOverlay = document.getElementById('tweet-overlay');
 
-        setTimeout(() => {
+        function showResults() {
             // Circle fills (Dashoffset goes from 251 down to roughly 220 for a low score of 12/100)
-            // Full circle is 251. 12% means we keep 88% empty. 
-            // 251 * 0.88 = 220 offset.
             scoreCircle.style.strokeDashoffset = "220";
 
             // Number counts up
@@ -289,8 +308,7 @@
 
             // Red Overlay on Tweet
             tweetOverlay.style.opacity = "1";
-
-        }, 2200);
+        }
 
         // Navigation
         document.addEventListener('keydown', (e) => {

@@ -146,6 +146,24 @@
             font-family: 'Share Tech Mono', monospace;
             text-shadow: 0 0 5px var(--neon-cyan);
         }
+
+        .glass-card {
+            background: rgba(5, 5, 8, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(0, 247, 255, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            width: 200px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card:hover {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 30px rgba(0, 247, 255, 0.2);
+            transform: translateY(-5px);
+        }
     </style>
 </head>
 
@@ -196,10 +214,27 @@
             <div class="h-[1px] w-12 bg-cyan-500/50"></div>
         </div>
 
-        <div class="mt-12 h-6 reveal-up" style="animation-delay: 3.5s;">
-            <p class="text-cyan-100/70 font-[Share Tech Mono] text-sm md:text-base tracking-wider">
-                <span id="typewriter"></span><span class="animate-pulse text-cyan-400">_</span>
-            </p>
+        <div class="mt-12 w-full max-w-4xl flex items-center justify-center gap-6">
+            <!-- Card 1 -->
+            <div class="glass-card reveal-up" style="animation-delay: 5s;">
+                <div class="text-3xl mb-2">🧠</div>
+                <h3 class="font-bold text-cyan-200 uppercase tracking-widest text-xs">AI Brain</h3>
+                <p class="text-[10px] text-gray-400 mt-1">Gemini 1.5 Contextual Scanning</p>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="glass-card reveal-up" style="animation-delay: 5.5s;">
+                <div class="text-3xl mb-2">⛓️</div>
+                <h3 class="font-bold text-cyan-200 uppercase tracking-widest text-xs">Immutable Ledger</h3>
+                <p class="text-[10px] text-gray-400 mt-1">Polygon PoS Verification</p>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="glass-card reveal-up" style="animation-delay: 6s;">
+                <div class="text-3xl mb-2">🛡️</div>
+                <h3 class="font-bold text-cyan-200 uppercase tracking-widest text-xs">Crowd Defense</h3>
+                <p class="text-[10px] text-gray-400 mt-1">Incentivized Reporting Nodes</p>
+            </div>
         </div>
 
     </main>
