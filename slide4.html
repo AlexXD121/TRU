@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRU | Tech Stack</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* --- THEME --- */
+        :root {
+            --bg-dark: #0b0c10;
+            --line-inactive: #1f2937;
+            --python: #FFD43B;
+            --gemini: #4E86F8;
+            --polygon: #8247E5;
+            --react: #61DAFB;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: white;
+            overflow: hidden;
+            font-family: 'Rajdhani', sans-serif;
+            background-image: radial-gradient(circle at 50% 50%, #17171f 0%, #0b0c10 100%);
+        }
+
+        /* --- PIPELINE --- */
+        .pipeline-container {
+            position: relative;
+            width: 80%;
+            height: 4px;
+            background: var(--line-inactive);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .energy-beam {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 20%;
+            background: linear-gradient(90deg, transparent, white, transparent);
+            filter: blur(2px);
+            opacity: 0;
+        }
+
+        /* --- NODES --- */
+        .node-card {
+            width: 90px;
+            height: 90px;
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 10;
+        }
+
+        .node-wrapper {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Active States (Brand Colors) */
+        .node-wrapper.active .node-card {
+            transform: scale(1.1) translateY(-10px);
+            background: #1e293b;
+        }
+
+        /* Python */
+        .node-wrapper.py.active .node-card {
+            border-color: var(--python);
+            box-shadow: 0 0 30px rgba(255, 212, 59, 0.4);
+        }
+
+        .node-wrapper.py.active .label {
+            color: var(--python);
+        }
+
+        /* Gemini */
+        .node-wrapper.ai.active .node-card {
+            border-color: var(--gemini);
+            box-shadow: 0 0 30px rgba(78, 134, 248, 0.4);
+        }
+
+        .node-wrapper.ai.active .label {
+            color: var(--gemini);
+        }
+
+        /* Polygon */
+        .node-wrapper.poly.active .node-card {
+            border-color: var(--polygon);
+            box-shadow: 0 0 30px rgba(130, 71, 229, 0.4);
+        }
+
+        .node-wrapper.poly.active .label {
+            color: var(--polygon);
+        }
+
+        /* React */
+        .node-wrapper.ui.active .node-card {
+            border-color: var(--react);
+            box-shadow: 0 0 30px rgba(97, 218, 251, 0.4);
+        }
+
+        .node-wrapper.ui.active .label {
+            color: var(--react);
+        }
+
+
+        /* --- TERMINAL TOOLTIP --- */
+        .terminal-box {
+            position: absolute;
+            top: -70px;
+            background: #000;
+            border: 1px solid #333;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: #0f0;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.2s ease;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            pointer-events: none;
+        }
+
+        .node-wrapper.active .terminal-box {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Blinking Cursor */
+        .cursor::after {
+            content: '▋';
+            animation: blink 1s infinite;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: 0
+            }
+        }
+
+        /* --- LOGOS --- */
+        .logo-svg {
+            width: 40px;
+            height: 40px;
+            opacity: 0.6;
+            transition: 0.3s;
+            filter: grayscale(100%);
+        }
+
+        .node-wrapper.active .logo-svg {
+            opacity: 1;
+            filter: grayscale(0%);
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+
+<body class="flex flex-col items-center justify-center min-h-screen">
+
+    <header class="absolute top-10 text-center">
+        <h1 class="text-5xl font-[Orbitron] font-bold text-white tracking-widest uppercase mb-2">System Architecture
+        </h1>
+        <div class="h-1 w-24 bg-blue-500 mx-auto rounded-full"></div>
+    </header>
+
+    <main class="relative w-full max-w-6xl h-[400px] flex items-center justify-center">
+
+        <div class="pipeline-container">
+            <div id="beam" class="energy-beam"></div>
+        </div>
+
+        <div class="node-wrapper py" style="left: 5%;" id="n1">
+            <div class="terminal-box"><span class="type-text" data-code="def scrape_data(url):"></span><span
+                    class="cursor"></span></div>
+            <div class="node-card">
+                <svg class="logo-svg" viewBox="0 0 128 128">
+                    <path fill="#FFD43B"
+                        d="M64 12c-15 0-24 7-24 17H25v17h46v5H29c-16 0-29 13-29 29s13 29 29 29h7V94h-5c-7 0-12-5-12-12s5-12 12-12h27c15 0 24-7 24-17V36c0-16-13-29-29-29zm-9 19c3 0 6 3 6 6s-3 6-6 6-6-3-6-6 3-6 6-6z" />
+                    <path fill="#3776AB"
+                        d="M64 116c15 0 24-7 24-17V82h15V65H57v-5h42c16 0 29-13 29-29S115 2 99 2h-7v15h5c7 0 12 5 12 12s-5 12-12 12H70c-15 0-24 7-24 17v17c0 16 13 29 29 29zm9-19c-3 0-6-3-6-6s3-6 6-6 6 3 6 6-3 6-6 6z" />
+                </svg>
+            </div>
+            <div class="mt-4 text-center">
+                <h3 class="font-bold text-lg text-gray-400 label">INGESTION</h3>
+                <p class="text-xs text-gray-600 font-mono">Python / Selenium</p>
+            </div>
+        </div>
+
+        <div class="node-wrapper ai" style="left: 32%;" id="n2">
+            <div class="terminal-box"><span class="type-text" data-code="await Gemini.analyze();"></span><span
+                    class="cursor"></span></div>
+            <div class="node-card">
+                <svg class="logo-svg" viewBox="0 0 24 24" fill="url(#geminiGrad)">
+                    <defs>
+                        <linearGradient id="geminiGrad" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#4E86F8" />
+                            <stop offset="100%" stop-color="#D6409F" />
+                        </linearGradient>
+                    </defs>
+                    <path
+                        d="M12,2 L12,2 C12.8,7.2 16.8,11.2 22,12 C16.8,12.8 12.8,16.8 12,22 C11.2,16.8 7.2,12.8 2,12 C7.2,11.2 11.2,7.2 12,2 Z" />
+                </svg>
+            </div>
+            <div class="mt-4 text-center">
+                <h3 class="font-bold text-lg text-gray-400 label">INTELLIGENCE</h3>
+                <p class="text-xs text-gray-600 font-mono">Gemini 1.5 Pro</p>
+            </div>
+        </div>
+
+        <div class="node-wrapper poly" style="left: 59%;" id="n3">
+            <div class="terminal-box"><span class="type-text" data-code="contract.mint(score);"></span><span
+                    class="cursor"></span></div>
+            <div class="node-card">
+                <svg class="logo-svg" viewBox="0 0 250 250">
+                    <path fill="#8247E5"
+                        d="M186 201l-61 35-61-35V131l61-35 61 35v70zM125 0L64 35v71l61 35 61-35V35L125 0z" />
+                </svg>
+            </div>
+            <div class="mt-4 text-center">
+                <h3 class="font-bold text-lg text-gray-400 label">TRUST LAYER</h3>
+                <p class="text-xs text-gray-600 font-mono">Polygon PoS</p>
+            </div>
+        </div>
+
+        <div class="node-wrapper ui" style="left: 86%;" id="n4">
+            <div class="terminal-box"><span class="type-text" data-code="<Dashboard data={tx} />"></span><span
+                    class="cursor"></span></div>
+            <div class="node-card">
+                <svg class="logo-svg" viewBox="-11.5 -10.23174 23 20.46348">
+                    <circle cx="0" cy="0" r="2.05" fill="#61DAFB" />
+                    <g stroke="#61DAFB" stroke-width="1" fill="none">
+                        <ellipse rx="11" ry="4.2" />
+                        <ellipse rx="11" ry="4.2" transform="rotate(60)" />
+                        <ellipse rx="11" ry="4.2" transform="rotate(120)" />
+                    </g>
+                </svg>
+            </div>
+            <div class="mt-4 text-center">
+                <h3 class="font-bold text-lg text-gray-400 label">PRESENTATION</h3>
+                <p class="text-xs text-gray-600 font-mono">Next.js / WhatsApp</p>
+            </div>
+        </div>
+
+    </main>
+
+    <div class="absolute bottom-10 flex gap-4 text-[10px] font-mono text-gray-600 uppercase tracking-widest">
+        <span>Status: Online</span>
+        <span>Latency: 42ms</span>
+        <span>Version: 1.0.4</span>
+    </div>
+
+    <script>
+        const beam = document.getElementById('beam');
+        const nodes = [
+            document.getElementById('n1'),
+            document.getElementById('n2'),
+            document.getElementById('n3'),
+            document.getElementById('n4')
+        ];
+
+        // Typewriter Logic
+        function typeWriter(element, text, speed = 30) {
+            element.innerHTML = "";
+            let i = 0;
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+
+        function runSequence() {
+            // Reset
+            beam.style.transition = 'none';
+            beam.style.left = '0%';
+            beam.style.opacity = '0';
+            nodes.forEach(n => {
+                n.classList.remove('active');
+                n.querySelector('.type-text').innerHTML = ""; // Clear text
+            });
+
+            // Start Animation Loop
+            setTimeout(() => {
+                // Beam Movement
+                beam.style.transition = 'left 6s linear, opacity 0.5s ease';
+                beam.style.opacity = '1';
+                beam.style.left = '100%';
+
+                // Node 1: Python (Start)
+                setTimeout(() => {
+                    nodes[0].classList.add('active');
+                    typeWriter(nodes[0].querySelector('.type-text'), nodes[0].querySelector('.type-text').dataset.code);
+                }, 100);
+
+                // Node 2: Gemini (33%)
+                setTimeout(() => {
+                    nodes[0].classList.remove('active');
+                    nodes[1].classList.add('active');
+                    typeWriter(nodes[1].querySelector('.type-text'), nodes[1].querySelector('.type-text').dataset.code);
+                }, 2000);
+
+                // Node 3: Polygon (66%)
+                setTimeout(() => {
+                    nodes[1].classList.remove('active');
+                    nodes[2].classList.add('active');
+                    typeWriter(nodes[2].querySelector('.type-text'), nodes[2].querySelector('.type-text').dataset.code);
+                }, 4000);
+
+                // Node 4: React (End)
+                setTimeout(() => {
+                    nodes[2].classList.remove('active');
+                    nodes[3].classList.add('active');
+                    typeWriter(nodes[3].querySelector('.type-text'), nodes[3].querySelector('.type-text').dataset.code);
+                }, 5500);
+            }, 500);
+        }
+
+        // Loop
+        setInterval(runSequence, 7500);
+        runSequence();
+
+        // Navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'ArrowLeft') window.location.href = 'slide3.html';
+            if (['ArrowRight', 'Space', 'Enter'].includes(e.code)) window.location.href = 'slide5.html';
+        });
+    </script>
+</body>
+
+</html>

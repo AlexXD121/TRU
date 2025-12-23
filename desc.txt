@@ -1,0 +1,65 @@
+PROJECT NAME: TRU
+
+Tagline: The Decentralized Trust Protocol. Domain: Cybersecurity / Blockchain / AI
+Executive Summary
+
+TRU is an autonomous cognitive security ecosystem designed to combat the weaponization of misinformation. Unlike traditional fact-checking, which is slow and centralized, TRU acts as a real-time "Credit Rating System" for information. We leverage Autonomous AI Agents to analyze viral content and Blockchain Technology to create an immutable, censorship-resistant record of truth.
+The Problem (Why We Built This)
+
+Misinformation is no longer just a social nuisance; it is a critical cybersecurity threat.
+
+    Financial Fraud: Phishing links (e.g., "Free ₹1000 Scheme") steal millions daily because they appear legitimate and bypass standard filters.
+
+    State-Level Panic: Rumors (e.g., "Ceasefire Broken," "Dam Collapsed") spread faster than authorities can debunk them, causing real-world riots and economic instability.
+
+    The "Memory Hole": When a lie is debunked, the correction often disappears, but the lie remains. There is no permanent, unhackable "Red Flag" attached to malicious content.
+
+The Solution: A Dual-Layer Ecosystem
+
+TRU is not just a tool; it is a self-sustaining ecosystem composed of two core autonomous entities:
+1. The Brain (AI-Y)
+
+An autonomous Python-based intelligence that acts as the "Judge."
+
+    Ingestion: It constantly scrapes high-velocity social media feeds and suspicious URLs.
+
+    Logic: It uses a weighted algorithm (Source Credibility + Sentiment Analysis + Cross-Reference) to calculate a mathematical Trust Score (0-100).
+
+    Example: A panic-inducing tweet from an unverified domain might receive a Score of 12/100 (CRITICAL RISK).
+
+2. The Face (Project X Platform)
+
+The public-facing dashboard and alert system.
+
+    Visualization: It automatically converts the AI's raw data into simple "Red Alert" or "Green Verified" cards for the public.
+
+    The Blockchain Seal: Simultaneously, it writes the verdict to the Polygon Blockchain. This creates a permanent audit trail (Transaction Hash) proving that this specific link was marked as a SCAM at this specific time.
+
+Key Features
+Immutable Truth Records
+
+We don't just store data in a database; we mint it on-chain. If TRU marks a URL as a "Scam," that record exists forever on the Polygon network. No hacker, government, or bad actor can delete the history of that lie.
+Gamified Vigilance ($TRUTH Tokens)
+
+We turn every user into a cybersecurity agent.
+
+    The Bounty System: If a user forwards a suspicious link to our WhatsApp Bot that turns out to be a NEW scam (one the AI hasn't seen before), the Smart Contract automatically rewards them with $TRUTH Tokens.
+
+    Result: A crowdsourced, decentralized defense network that scales instantly.
+
+Zero-Touch Autonomy
+
+The entire pipeline—from scanning a tweet to analyzing it, scoring it, minting the blockchain record, and posting the alert—happens automatically. No human intervention is required.
+The Tech Stack (Zero-Cost Architecture)
+
+    Intelligence: Python, Google Gemini (Free Tier), Scikit-learn (Sentiment Analysis).
+
+    Blockchain: Polygon Amoy Testnet (Smart Contracts), Web3.py.
+
+    Frontend: Next.js (React 19), Tailwind CSS, Framer Motion.
+
+    Integration: Twilio API (WhatsApp Bot).
+
+Real-World Impact
+
+Firewalls protect your servers. TRU protects your reality. By combining the speed of AI with the trust of Blockchain, we are building the immune system for the information age.

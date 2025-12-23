@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REALITY IS BROKEN | System Failure</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rubik+Glitch&family=Inter:wght@400;600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        /* --- Fonts --- */
+        .font-glitch {
+            font-family: 'Rubik Glitch', system-ui;
+        }
+
+        .font-mono-tech {
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .font-sans-inter {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* --- Palette --- */
+        :root {
+            --bg-void: #050000;
+            --alert-red: #ff003c;
+            --glitch-white: #f0f0f0;
+            --scan-line: rgba(255, 0, 0, 0.05);
+        }
+
+        body {
+            background-color: var(--bg-void);
+            color: var(--glitch-white);
+            overflow: hidden;
+        }
+
+        /* --- CRT & Noise Effects --- */
+        .scanlines {
+            background: linear-gradient(to bottom,
+                    rgba(255, 255, 255, 0),
+                    rgba(255, 255, 255, 0) 50%,
+                    rgba(0, 0, 0, 0.2) 50%,
+                    rgba(0, 0, 0, 0.2));
+            background-size: 100% 4px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 20;
+            pointer-events: none;
+        }
+
+        .crt-flicker {
+            animation: flicker 0.15s infinite;
+            pointer-events: none;
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 0, 60, 0.02);
+            z-index: 19;
+        }
+
+        @keyframes flicker {
+            0% {
+                opacity: 0.9;
+            }
+
+            50% {
+                opacity: 1.0;
+            }
+
+            100% {
+                opacity: 0.9;
+            }
+        }
+
+        /* --- Glitch Text Animation --- */
+        .glitch-text {
+            position: relative;
+        }
+
+        .glitch-text::before,
+        .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .glitch-text::before {
+            left: 2px;
+            text-shadow: -1px 0 #ff003c;
+            clip: rect(24px, 550px, 90px, 0);
+            animation: glitch-anim-2 3s infinite linear alternate-reverse;
+        }
+
+        .glitch-text::after {
+            left: -2px;
+            text-shadow: -1px 0 #00e5ff;
+            clip: rect(85px, 550px, 140px, 0);
+            animation: glitch-anim 2.5s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim {
+            0% {
+                clip: rect(14px, 9999px, 122px, 0);
+            }
+
+            5% {
+                clip: rect(89px, 9999px, 86px, 0);
+            }
+
+            10% {
+                clip: rect(32px, 9999px, 137px, 0);
+            }
+
+            15% {
+                clip: rect(96px, 9999px, 5px, 0);
+            }
+
+            20% {
+                clip: rect(54px, 9999px, 29px, 0);
+            }
+
+            25% {
+                clip: rect(27px, 9999px, 18px, 0);
+            }
+
+            30% {
+                clip: rect(99px, 9999px, 76px, 0);
+            }
+
+            35% {
+                clip: rect(104px, 9999px, 12px, 0);
+            }
+
+            40% {
+                clip: rect(83px, 9999px, 102px, 0);
+            }
+
+            45% {
+                clip: rect(4px, 9999px, 86px, 0);
+            }
+
+            50% {
+                clip: rect(27px, 9999px, 63px, 0);
+            }
+
+            55% {
+                clip: rect(117px, 9999px, 4px, 0);
+            }
+
+            60% {
+                clip: rect(59px, 9999px, 118px, 0);
+            }
+
+            65% {
+                clip: rect(140px, 9999px, 3px, 0);
+            }
+
+            70% {
+                clip: rect(39px, 9999px, 66px, 0);
+            }
+
+            75% {
+                clip: rect(113px, 9999px, 56px, 0);
+            }
+
+            80% {
+                clip: rect(21px, 9999px, 13px, 0);
+            }
+
+            85% {
+                clip: rect(78px, 9999px, 126px, 0);
+            }
+
+            90% {
+                clip: rect(48px, 9999px, 34px, 0);
+            }
+
+            95% {
+                clip: rect(13px, 9999px, 93px, 0);
+            }
+
+            100% {
+                clip: rect(98px, 9999px, 106px, 0);
+            }
+        }
+
+        @keyframes glitch-anim-2 {
+            0% {
+                clip: rect(65px, 9999px, 100px, 0);
+            }
+
+            100% {
+                clip: rect(15px, 9999px, 33px, 0);
+            }
+        }
+
+        /* --- Ghost Scrolling Text --- */
+        .ghost-text-column {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            position: absolute;
+            font-family: 'Share Tech Mono', monospace;
+            opacity: 0.1;
+            font-size: 14px;
+            color: var(--alert-red);
+            top: -10%;
+            height: 120%;
+            white-space: nowrap;
+            animation: scroll-vertical 20s linear infinite;
+        }
+
+        @keyframes scroll-vertical {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(-50%);
+            }
+        }
+
+        /* --- Card Styles --- */
+        .news-card {
+            background: rgba(10, 10, 10, 0.9);
+            border: 1px solid #333;
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+        }
+
+        .news-card:hover {
+            transform: scale(1.02) rotateX(2deg);
+            z-index: 10;
+            border-color: var(--alert-red);
+            box-shadow: 0 0 20px rgba(255, 0, 60, 0.3);
+        }
+
+        /* Float Animations for Cards */
+        .float-delay-1 {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .float-delay-2 {
+            animation: float 7s ease-in-out infinite 1s;
+        }
+
+        .float-delay-3 {
+            animation: float 8s ease-in-out infinite 0.5s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+    </style>
+</head>
+
+<body class="w-full h-screen flex flex-col items-center justify-center relative">
+
+    <!-- FX Layers -->
+    <div class="scanlines"></div>
+    <div class="crt-flicker"></div>
+
+    <!-- Background Noise Canvas -->
+    <canvas id="noise-canvas" class="absolute inset-0 z-0 opacity-20"></canvas>
+
+    <!-- Ghost Text Background -->
+    <div class="absolute inset-0 overflow-hidden z-1 flex justify-between pointer-events-none px-10">
+        <div class="ghost-text-column" style="left: 5%; animation-duration: 25s;">
+            BREAKING: FINANCIAL MARKET CRASH // DATA BREACH // IDENTITY THEFT // SYSTEM COMPROMISED // ERROR 404
+        </div>
+        <div class="ghost-text-column" style="left: 20%; animation-duration: 35s; opacity: 0.05;">
+            PANIC SPREADS // EVACUATE NOW // VIRAL MISINFORMATION // WHO CAN YOU TRUST?
+        </div>
+        <div class="ghost-text-column" style="right: 5%; animation-duration: 28s;">
+            TRUTH NOT FOUND // DEEPFAKE DETECTED // ELECTION INTERFERENCE // FAKE NEWS ALERT
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <main class="relative z-30 flex flex-col items-center w-full max-w-7xl mx-auto px-4">
+
+        <!-- Chaos Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full mb-16 perspective-1000">
+
+            <!-- Card 1: WhatsApp Phishing (Left) -->
+            <div class="news-card float-delay-1 p-4 rounded-lg relative overflow-hidden group">
+                <div class="absolute top-2 right-2 bg-red-600 text-black font-bold text-xs px-2 py-1 blink-fast">
+                    PHISHING DETECTED</div>
+                <div class="flex items-center mb-3 border-b border-gray-800 pb-2">
+                    <div class="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center mr-2">
+                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.506-.669-.516l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
+                        </svg>
+                    </div>
+                    <span class="text-white font-sans-inter font-semibold text-sm">Family Chat (5)</span>
+                </div>
+                <div class="bg-[#1f2c34] p-3 rounded-lg rounded-tl-none border border-green-900/30">
+                    <p class="text-gray-300 text-sm font-sans-inter italic mb-2">Forwarded</p>
+                    <p class="text-white text-sm font-sans-inter">Get ₹1000 Free Govt Bonus! Scheme ending tonight. 🚨
+                    </p>
+                    <p class="text-blue-400 text-sm mt-1 underline cursor-pointer hover:text-red-400 transition-colors">
+                        http://pm-yojna-bonus.xyz</p>
+                </div>
+                <div class="text-[10px] text-gray-500 mt-2 text-right">10:42 PM</div>
+            </div>
+
+            <!-- Card 2: Panic Tweet (Center) -->
+            <div
+                class="news-card float-delay-2 p-5 rounded-lg border-red-900/50 bg-black scale-110 z-10 shadow-[0_0_50px_rgba(255,0,0,0.2)]">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex items-center">
+                        <div
+                            class="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center font-bold text-white text-lg">
+                            !</div>
+                        <div class="ml-3">
+                            <h3 class="font-bold text-white text-sm font-sans-inter">BREAKING NEWS 24/7</h3>
+                            <p class="text-gray-500 text-xs">@BreakingAlerts • <span class="text-red-500">LIVE</span>
+                            </p>
+                        </div>
+                    </div>
+                    <svg class="w-6 h-6 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-black text-white font-sans-inter leading-tight mb-4">
+                    DAM COLLAPSE CONFIRMED. <span class="bg-red-600 px-1 text-black">EVACUATE NOW.</span>
+                </h2>
+                <div
+                    class="mt-4 pt-4 border-t border-gray-800 flex justify-between text-gray-400 font-mono-tech text-sm">
+                    <span class="flex items-center text-red-500">
+                        <svg class="w-4 h-4 mr-1 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                            </path>
+                        </svg>
+                        <span id="retweet-counter">12,402</span>
+                    </span>
+                    <span>1.2M Views</span>
+                </div>
+            </div>
+
+            <!-- Card 3: 404 Erasure (Right) -->
+            <div class="news-card float-delay-3 bg-gray-100 rounded-lg p-0 overflow-hidden relative">
+                <!-- Browser Bar -->
+                <div class="bg-gray-200 px-3 py-2 flex items-center border-b border-gray-300">
+                    <div class="flex gap-1.5 mr-3">
+                        <div class="w-2.5 h-2.5 rounded-full bg-red-400"></div>
+                        <div class="w-2.5 h-2.5 rounded-full bg-yellow-400"></div>
+                        <div class="w-2.5 h-2.5 rounded-full bg-green-400"></div>
+                    </div>
+                    <div
+                        class="bg-white flex-1 h-5 rounded text-[10px] flex items-center px-2 text-gray-400 font-sans-inter">
+                        fact-check.org/dam-safety-report</div>
+                </div>
+                <!-- Content -->
+                <div class="p-6 bg-white h-full flex flex-col items-center justify-center text-center">
+                    <h1 class="text-4xl font-bold text-gray-800 font-sans-inter mb-2">404</h1>
+                    <p class="text-gray-500 text-xs font-mono mb-4">Page Not Found</p>
+                    <div class="w-full h-px bg-gray-200 mb-4"></div>
+                    <p class="text-gray-400 text-xs line-through">Correction: The Dam is Safe. Authorities confirm
+                        structural int...</p>
+
+                    <!-- Glitch Overlay on this card specifically -->
+                    <div
+                        class="absolute inset-0 bg-red-500 mix-blend-multiply opacity-0 animate-pulse-fast pointer-events-none">
+                    </div>
+                </div>
+                <!-- Deleted Stamp -->
+                <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div
+                        class="border-4 border-red-600 text-red-600 font-black text-3xl p-2 transform -rotate-12 opacity-80 mix-blend-multiply">
+                        DELETED
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Typography: The Message -->
+        <h1 class="glitch-text text-6xl md:text-8xl font-glitch text-white text-center tracking-wider mb-4"
+            data-text="REALITY IS BROKEN">
+            REALITY IS BROKEN
+        </h1>
+
+        <p class="font-mono-tech text-red-500 text-lg md:text-xl tracking-[0.3em] uppercase animate-pulse">
+            Financial Fraud. Viral Panic. The Erasure of Truth.
+        </p>
+
+    </main>
+
+    <!-- Overlay Vignette -->
+    <div
+        class="absolute inset-0 pointer-events-none z-40 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)]">
+    </div>
+
+    <script>
+        // --- Noise Canvas ---
+        const canvas = document.getElementById('noise-canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        function noise() {
+            const w = canvas.width;
+            const h = canvas.height;
+            const idata = ctx.createImageData(w, h);
+            const buffer32 = new Uint32Array(idata.data.buffer);
+            const len = buffer32.length;
+
+            for (let i = 0; i < len; i++) {
+                if (Math.random() < 0.1) {
+                    buffer32[i] = 0xffffffff;
+                }
+            }
+            ctx.putImageData(idata, 0, 0);
+            requestAnimationFrame(noise);
+        }
+        noise();
+
+        // --- Retweet Counter Animation ---
+        const counterEl = document.getElementById('retweet-counter');
+        let count = 12402;
+
+        setInterval(() => {
+            // Randomly increase by small or large amounts to simulate viral spikes
+            const jump = Math.floor(Math.random() * 50) + 1;
+            count += jump;
+            counterEl.textContent = count.toLocaleString();
+        }, 100);
+
+        // --- Navigation ---
+        document.addEventListener('keydown', (e) => {
+            if (['ArrowRight', 'Space', 'Enter'].includes(e.code)) {
+                window.location.href = 'slide2.html';
+            }
+        });
+
+    </script>
+
+    <style>
+        .animate-pulse-fast {
+            animation: pulse-fast 0.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse-fast {
+
+            0%,
+            100% {
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 0.1;
+            }
+        }
+
+        .blink-fast {
+            animation: blink 0.5s step-end infinite;
+        }
+    </style>
+
+</body>
+
+</html>

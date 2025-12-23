@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRU | System Online</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
+    <style>
+        /* --- CORE SETTINGS --- */
+        :root {
+            --obsidian: #050508;
+            --neon-cyan: #00f7ff;
+            --glass-blue: rgba(0, 247, 255, 0.1);
+        }
+
+        body {
+            background-color: var(--obsidian);
+            color: white;
+            overflow: hidden;
+            margin: 0;
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        /* --- CRT & ATMOSPHERE EFFECTS --- */
+        .scanlines {
+            background: linear-gradient(to bottom,
+                    rgba(255, 255, 255, 0),
+                    rgba(255, 255, 255, 0) 50%,
+                    rgba(0, 0, 0, 0.2) 50%,
+                    rgba(0, 0, 0, 0.2));
+            background-size: 100% 4px;
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .noise {
+            position: absolute;
+            inset: 0;
+            opacity: 0.05;
+            background: url('https://grainy-gradients.vercel.app/noise.svg');
+            pointer-events: none;
+            z-index: 11;
+        }
+
+        .vignette {
+            background: radial-gradient(circle, transparent 40%, #000 100%);
+            position: absolute;
+            inset: 0;
+            z-index: 12;
+            pointer-events: none;
+        }
+
+        /* --- LASER DRAW ANIMATION (SVG) --- */
+        .draw-path {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: draw 2.5s cubic-bezier(0.37, 0, 0.63, 1) forwards;
+        }
+
+        .fill-fade {
+            opacity: 0;
+            animation: fillIn 1s ease-out 2s forwards;
+            /* Starts after draw */
+        }
+
+        @keyframes draw {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes fillIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* --- GLOW PULSE --- */
+        .logo-container {
+            filter: drop-shadow(0 0 0px var(--neon-cyan));
+            animation: radioactive-glow 4s infinite ease-in-out 2.5s;
+            /* Starts after draw */
+        }
+
+        @keyframes radioactive-glow {
+
+            0%,
+            100% {
+                filter: drop-shadow(0 0 10px rgba(0, 247, 255, 0.3));
+            }
+
+            50% {
+                filter: drop-shadow(0 0 30px rgba(0, 247, 255, 0.8));
+            }
+        }
+
+        /* --- TEXT ANIMATIONS --- */
+        .glitch-text {
+            animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+            display: inline-block;
+        }
+
+        @keyframes glitch-skew {
+            0% {
+                transform: skew(0deg);
+            }
+
+            20% {
+                transform: skew(-2deg);
+            }
+
+            40% {
+                transform: skew(2deg);
+            }
+
+            60% {
+                transform: skew(0deg);
+            }
+
+            100% {
+                transform: skew(0deg);
+            }
+        }
+
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideUp 1s ease-out 2.8s forwards;
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- TERMINAL DATA --- */
+        .terminal-text {
+            font-family: 'Share Tech Mono', monospace;
+            text-shadow: 0 0 5px var(--neon-cyan);
+        }
+    </style>
+</head>
+
+<body class="flex flex-col items-center justify-center h-screen w-full">
+
+    <canvas id="network-canvas" class="absolute inset-0 z-0"></canvas>
+
+    <div class="scanlines"></div>
+    <div class="noise"></div>
+    <div class="vignette"></div>
+
+    <main class="relative z-20 flex flex-col items-center">
+
+        <div class="logo-container mb-6 relative">
+            <svg width="180" height="200" viewBox="0 0 100 100" fill="none">
+                <defs>
+                    <linearGradient id="shield-grad" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="rgba(0, 247, 255, 0.2)" />
+                        <stop offset="100%" stop-color="rgba(0, 247, 255, 0.05)" />
+                    </linearGradient>
+                </defs>
+
+                <path class="draw-path" d="M50 5 L20 15 V45 C20 70 35 90 50 98 C65 90 80 70 80 45 V15 L50 5Z"
+                    stroke="#00f7ff" stroke-width="1.5" stroke-linecap="round" fill="none" />
+
+                <path class="fill-fade" d="M50 5 L20 15 V45 C20 70 35 90 50 98 C65 90 80 70 80 45 V15 L50 5Z"
+                    fill="url(#shield-grad)" />
+
+                <path class="draw-path" d="M35 45 H65 V65 H35 Z" stroke="#00f7ff" stroke-width="1.5" fill="none" />
+                <path class="draw-path" d="M40 45 V35 A10 10 0 0 1 60 35 V45" stroke="#00f7ff" stroke-width="1.5"
+                    fill="none" />
+
+                <circle class="fill-fade" cx="50" cy="55" r="4" fill="#fff" />
+            </svg>
+
+            <div class="absolute inset-0 bg-cyan-500 blur-[80px] opacity-20 animate-pulse"></div>
+        </div>
+
+        <h1 class="text-8xl md:text-9xl font-black font-[Orbitron] tracking-widest text-transparent bg-clip-text bg-gradient-to-b from-white to-cyan-500 reveal-up"
+            style="filter: drop-shadow(0 0 15px rgba(0,247,255,0.5));">
+            TRU
+        </h1>
+
+        <div class="mt-4 flex items-center gap-3 reveal-up" style="animation-delay: 3s;">
+            <div class="h-[1px] w-12 bg-cyan-500/50"></div>
+            <h2 class="text-cyan-300 font-[Rajdhani] tracking-[0.5em] uppercase text-sm md:text-lg">Decentralized Trust
+                Protocol</h2>
+            <div class="h-[1px] w-12 bg-cyan-500/50"></div>
+        </div>
+
+        <div class="mt-12 h-6 reveal-up" style="animation-delay: 3.5s;">
+            <p class="text-cyan-100/70 font-[Share Tech Mono] text-sm md:text-base tracking-wider">
+                <span id="typewriter"></span><span class="animate-pulse text-cyan-400">_</span>
+            </p>
+        </div>
+
+    </main>
+
+    <div class="absolute bottom-10 left-10 z-20 opacity-0 animate-[fadeIn_0.5s_ease-out_1s_forwards]">
+        <div class="text-[10px] text-cyan-800 terminal-text leading-tight opacity-70">
+            <p>> INIT_CORE_LOGIC...</p>
+            <p>> CONNECTING_POLYGON_RPC...</p>
+            <p>> LOAD_GEMINI_1.5...</p>
+            <p>> SYSTEM_READY.</p>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. NETWORK ANIMATION (Canvas) ---
+        const canvas = document.getElementById('network-canvas');
+        const ctx = canvas.getContext('2d');
+        let w, h, nodes = [];
+
+        const resize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; };
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Node {
+            constructor() {
+                this.x = Math.random() * w;
+                this.y = Math.random() * h;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if (this.x < 0 || this.x > w) this.vx *= -1;
+                if (this.y < 0 || this.y > h) this.vy *= -1;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(0, 247, 255, ${Math.random() * 0.5})`; // Twinkle effect
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+
+        // Initialize Nodes
+        for (let i = 0; i < 80; i++) nodes.push(new Node());
+
+        function animate() {
+            ctx.fillStyle = 'rgba(5, 5, 8, 0.2)'; // Trails effect
+            ctx.fillRect(0, 0, w, h);
+
+            // Connect nodes
+            nodes.forEach((node, i) => {
+                node.update();
+                node.draw();
+                // Draw lines to nearby nodes
+                for (let j = i + 1; j < nodes.length; j++) {
+                    let dx = node.x - nodes[j].x;
+                    let dy = node.y - nodes[j].y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 150) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(0, 247, 255, ${0.1 - dist / 1500})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(node.x, node.y);
+                        ctx.lineTo(nodes[j].x, nodes[j].y);
+                        ctx.stroke();
+                    }
+                }
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // --- 2. TYPEWRITER ---
+        const text = "Firewalls protect servers. TRU protects reality.";
+        const typeEl = document.getElementById('typewriter');
+        setTimeout(() => {
+            let i = 0;
+            const type = setInterval(() => {
+                typeEl.textContent += text[i];
+                i++;
+                if (i === text.length) clearInterval(type);
+            }, 50);
+        }, 3800); // Start after logo reveal
+
+        // --- Navigation ---
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'ArrowRight') window.location.href = 'slide3.html';
+            if (e.code === 'ArrowLeft') window.location.href = 'slide1.html';
+        });
+    </script>
+</body>
+
+</html>
