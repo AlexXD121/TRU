@@ -313,6 +313,7 @@
         // Navigation
         document.addEventListener('keydown', (e) => {
             if (e.code === 'ArrowLeft') window.location.href = 'slide4.html';
+            if (['ArrowRight', 'Space', 'Enter'].includes(e.code)) window.location.href = 'slide6.html';
         });
 
     </script>
